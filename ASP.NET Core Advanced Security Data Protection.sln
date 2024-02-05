@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1706.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET Core Advanced Security Data Protection", "ASP.NET Core Advanced Security Data Protection\ASP.NET Core Advanced Security Data Protection.csproj", "{EFEB387C-F1DA-49D3-A39F-27F41E11B54E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFEB387C-F1DA-49D3-A39F-27F41E11B54E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFEB387C-F1DA-49D3-A39F-27F41E11B54E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFEB387C-F1DA-49D3-A39F-27F41E11B54E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFEB387C-F1DA-49D3-A39F-27F41E11B54E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F30AF99F-5924-443F-833C-7CE83961EDFF}
+	EndGlobalSection
+EndGlobal
