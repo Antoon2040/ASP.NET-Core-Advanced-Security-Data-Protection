@@ -18,12 +18,12 @@ namespace SecurityApp.WebApi.Controllers
         {
             _dataProtectionProvider = dataProtectionProvider;
         }
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("purpose-1")]
+        public IActionResult GetPurposeString1()
         {
             string title = "Welcome to this course!";
 
-            var dataprotector = _dataProtectionProvider.CreateProtector("DataController");
+            var dataprotector = _dataProtectionProvider.CreateProtector("DataController.GetPurposeString1");
             var protectedTitle = dataprotector.Protect(title);
             var unProtectedTitle = dataprotector.Unprotect(protectedTitle);
 
@@ -32,6 +32,22 @@ namespace SecurityApp.WebApi.Controllers
                 Title = title,
                 ProtectedTitle = protectedTitle,
                 UnProtectedTitle = unProtectedTitle 
+            });
+        }
+        [HttpGet("purpose-2")]
+        public IActionResult GetPurposeString2()
+        {
+            string title = "Welcome to this course!";
+
+            var dataprotector = _dataProtectionProvider.CreateProtector("DataController.GetPurposeString2");
+            var protectedTitle = dataprotector.Protect(title);
+            var unProtectedTitle = dataprotector.Unprotect(protectedTitle);
+
+            return Ok(new DataProtection()
+            {
+                Title = title,
+                ProtectedTitle = protectedTitle,
+                UnProtectedTitle = unProtectedTitle
             });
         }
     }

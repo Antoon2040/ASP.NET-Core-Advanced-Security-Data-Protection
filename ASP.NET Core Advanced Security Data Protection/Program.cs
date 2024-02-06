@@ -14,6 +14,8 @@ class Program
         // 2. Create an instance of Idataprotection interface
         var dataProtectionProvider = services.GetService<IDataProtectionProvider>();
         var dataProtector = dataProtectionProvider.CreateProtector("FirstExample");
+        Console.WriteLine("----------------------------Data Protector ---------------------------------");
+
         // 3. protect and unprotect a payload
         string title = "Welcome to this course!";
         Console.WriteLine($"Original value ={title}");
@@ -24,6 +26,9 @@ class Program
         var unProtectedTitle = dataProtector.Unprotect(protectedTitle);
         Console.WriteLine($"Unprotected value ={unProtectedTitle}");
 
+        Console.WriteLine("----------------------------Password Hashing ---------------------------------");
+
+        string password = "P@ss0rd!@";
         Console.ReadLine();
     }
 }
