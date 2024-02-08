@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="7.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="7.0.15" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 </Project>
