@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace ASP.NET_Core_Advanced_Security_Data_Protection;
@@ -12,57 +14,93 @@ class Program
     {
         // 1. Data protection services
         var servicesCollection = new ServiceCollection();
-        servicesCollection.AddDataProtection().
-            PersistKeysToFileSystem(new DirectoryInfo(@"c:\temp-encryption-keys"))
-            .ProtectKeysWithDpapi();
-        var services = servicesCollection.BuildServiceProvider();
 
-        var dataProtectionProvider = services.GetService<IDataProtectionProvider>();
-        var dataProtector = dataProtectionProvider.CreateProtector("FirstExample.RevokedKeys");
 
-        string title = "Welcome to this course!";
-        Console.WriteLine($"Original value ={title}");
-        byte[] titleByte = Encoding.UTF8.GetBytes(title);
+        var provider = new EphemeralDataProtectionProvider();
+        var protector = provider.CreateProtector($"Temp.Provider");
 
-        var protectedTitle = dataProtector.Protect(titleByte);
-        Console.WriteLine($"Protected value ={Convert.ToBase64String(protectedTitle)}");
+        string title = "Welcome to EphemeralDataProtectionProvider";
+        var protectedData = protector.Protect(title);
+        var unprotectedData = protector.Unprotect(protectedData);
 
-        var unProtectedTitle = dataProtector.Unprotect(protectedTitle);
-        Console.WriteLine($"Unprotected value ={Encoding.UTF8.GetString(unProtectedTitle)}");
+        Console.WriteLine($"title:{title}");
+        Console.WriteLine($"protectedData:{protectedData}");
+        Console.WriteLine($"unprotectedData:{unprotectedData}");
+        //servicesCollection.AddDataProtection()
+        //    .SetDefaultKeyLifetime(TimeSpan.FromDays(10))
+        //    .PersistKeysToFileSystem(new DirectoryInfo(@"c:\temp-encryption-keys"))
+        //    .ProtectKeysWithDpapi();
 
-        //Get a reference to Keymanager
-        var keyManagerService = services.GetService<IKeyManager>();
-        keyManagerService.RevokeAllKeys(DateTimeOffset.Now);
+        //var registryKey = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Keys\LinkedInLearning");
+        //servicesCollection.AddDataProtection()
+        //    .PersistKeysToRegistry(registryKey);
 
-        try
-        {
-            var tryUnprotect = dataProtector.Unprotect(protectedTitle);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        try
-        {
-            IPersistedDataProtector persistedDataProtector = dataProtector as IPersistedDataProtector;
-            if (persistedDataProtector == null)
-                throw new Exception("Could not convert...");
-            bool requiresMigration, wasRevoked;
-            var unprotectedPatload = persistedDataProtector.DangerousUnprotect(
-                protectedData: protectedTitle,
-                ignoreRevocationErrors: true,
-                requiresMigration: out requiresMigration,
-                wasRevoked: out wasRevoked);
-            Console.WriteLine($"requiresMigration ={requiresMigration}");
-            Console.WriteLine($"wasRevoked ={wasRevoked}");
-            String value = Encoding.UTF8.GetString(unprotectedPatload);
-            Console.WriteLine($"Unprotected value ={Encoding.UTF8.GetString(unProtectedTitle)}");
+        //var services = servicesCollection.BuildServiceProvider();
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        //var dataProtectionProvider = services.GetService<IDataProtectionProvider>();
+        //var dataProtector = dataProtectionProvider.CreateProtector("Lifetme.Test1");
+
+        //var dataprotected = dataProtector.Protect("Simple string");
+
+        //var keyManagerService = services.GetService<IKeyManager>();
+
+        //var allKeys = keyManagerService.GetAllKeys();
+
+        //foreach ( var key in allKeys )
+        //{
+        //    Console.WriteLine($"Key Id: {key.KeyId} , Created: {key.CreationDate} , Expiration: {key.ExpirationDate} ," +
+        //        $"Is Revoked: {key.IsRevoked}");
+        //}
+        //keyManagerService.RevokeAllKeys(DateTimeOffset.Now);
+        //var allKeysAferReovked = keyManagerService.GetAllKeys();
+        //foreach (var key in allKeysAferReovked)
+        //{
+        //    Console.WriteLine($"Key Id: {key.KeyId} , Created: {key.CreationDate} , Expiration: {key.ExpirationDate} ," +
+        //        $"Is Revoked: {key.IsRevoked}");
+        //}
+        //string title = "Welcome to this course!";
+        //Console.WriteLine($"Original value ={title}");
+        //byte[] titleByte = Encoding.UTF8.GetBytes(title);
+
+        //var protectedTitle = dataProtector.Protect(titleByte);
+        //Console.WriteLine($"Protected value ={Convert.ToBase64String(protectedTitle)}");
+
+        //var unProtectedTitle = dataProtector.Unprotect(protectedTitle);
+        //Console.WriteLine($"Unprotected value ={Encoding.UTF8.GetString(unProtectedTitle)}");
+
+        ////Get a reference to Keymanager
+        //var keyManagerService = services.GetService<IKeyManager>();
+        //keyManagerService.RevokeAllKeys(DateTimeOffset.Now);
+
+        //try
+        //{
+        //    var tryUnprotect = dataProtector.Unprotect(protectedTitle);
+        //}
+        //catch (Exception ex)
+        //{
+        //    Console.WriteLine(ex.Message);
+        //}
+        //try
+        //{
+        //    IPersistedDataProtector persistedDataProtector = dataProtector as IPersistedDataProtector;
+        //    if (persistedDataProtector == null)
+        //        throw new Exception("Could not convert...");
+        //    bool requiresMigration, wasRevoked;
+        //    var unprotectedPatload = persistedDataProtector.DangerousUnprotect(
+        //        protectedData: protectedTitle,
+        //        ignoreRevocationErrors: true,
+        //        requiresMigration: out requiresMigration,
+        //        wasRevoked: out wasRevoked);
+        //    Console.WriteLine($"requiresMigration ={requiresMigration}");
+        //    Console.WriteLine($"wasRevoked ={wasRevoked}");
+        //    String value = Encoding.UTF8.GetString(unprotectedPatload);
+        //    Console.WriteLine($"Unprotected value ={Encoding.UTF8.GetString(unProtectedTitle)}");
+
+        //}
+        //catch (Exception ex)
+        //{
+        //    Console.WriteLine(ex.Message);
+        //}
         //Console.WriteLine("----------------------------Password Hashing ---------------------------------");
 
         //string password = "P@ss0rd!@";

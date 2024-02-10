@@ -1,4 +1,11 @@
 ﻿
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.DataProtection.Repositories;
+using Microsoft.Extensions.Options;
+using SecurityApp.WebApi.Algorithms;
+using SecurityApp.WebApi.Xml;
+
 namespace SecurityApp.WebApi;
 
 public class Program
@@ -13,7 +20,19 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddDataProtection();
+
+        //Register the custom authenticated encryptor factory
+        //builder.Services.AddSingleton<IAuthenticatedEncryptorFactory, CustomAuthenticatedEncryptorFactory>();
+
+        builder.Services.AddSingleton<IXmlRepository,InMemoryXmlRepository>();
+        builder.Services.AddDataProtection()
+            .Services.AddSingleton<IConfigureOptions<KeyManagementOptions>>(options =>
+            {
+                var xmlRepository = options.GetRequiredService<IXmlRepository>();
+                return new ConfigureOptions<KeyManagementOptions>(opt => opt.XmlRepository = xmlRepository);
+            });
+
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
